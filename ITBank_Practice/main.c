@@ -47,3 +47,45 @@ int main(void)
  return 0;
 }*/
 
+// 6/16/2015
+
+/* 과제
+struct tagPerson{
+    char strName[10];
+    char strPhone[10];
+    int nAge;
+    char strAddress[40];
+};
+
+void Input(struct tagPerson *stPerson);
+void ShowData(struct tagPerson *stPerson);
+
+int main(){
+
+    struct tagPerson stPerson;
+    Input(&stPerson);
+    ShowData(&stPerson);
+        return 0;
+}
+
+void Input(struct tagPerson *stPerson){
+    printf("이름을 입력하세요: ");
+    scanf("%s", stPerson->strName);
+
+    printf("전화번호를 입력하세요: ");
+    scanf("%s", stPerson->strPhone);
+
+    printf("나이를 입력하세요: ");
+    scanf("%d", &stPerson->nAge);
+    fflush(stdin);
+
+    printf("주소를 입력하세요: ");
+    gets(stPerson->strAddress);
+}
+
+void ShowData(struct tagPerson *stPerson){
+    printf("이름: %s\n", stPerson->strName);
+    printf("전화번호: %s\n", stPerson->strPhone);
+    printf("나이: %d\n", stPerson->nAge);
+    printf("주소: %s\n", stPerson->strAddress);
+}*/
