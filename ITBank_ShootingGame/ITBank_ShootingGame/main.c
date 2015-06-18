@@ -1,5 +1,8 @@
 ﻿#include "WhiteBoardConsole.h"
 #include <windows.h>
+#include <stdlib.h>
+#include <time.h>
+
 #define TRUE 1
 #define FALSE 0
 #if _DEBUG
@@ -12,10 +15,19 @@
 int g_nCharXPos = 30;
 int g_nCharYPos = 14;
 DWORD g_dwPrevChartime;
-int   g_nBulletFalg = FALSE;
-int   g_nBulletXPos;
-int   g_nBulletYPos;
-int   g_nBulletKeyFlag = FALSE;
+int g_nBulletFalg = FALSE;
+int g_nBulletXPos;
+int g_nBulletYPos;
+int g_nBulletKeyFlag = FALSE;
+int g_nEnemyXPos;
+int g_nEnemyYPos;
+DWORD g_dwPrevEnemytime;
+
+void Init()
+{
+	g_nEnemyXPos = (rand() % 59) + 2;
+	g_nEnemyYPos = 0;
+}
 
 void DrawUI()
 {
@@ -82,10 +94,22 @@ void KeyProc()
 
 void Update()
 {
+	if (g_nBulletXPos + 2 > g_nEnemyXPos && g_nBulletXPos < g_nEnemyXPos + 2 && g_nBulletYPos <= g_nEnemyYPos + 1 && g_nBulletYPos + 1 >= g_nEnemyYPos){
+		Init();
+		g_nBulletFalg = FALSE;
+	}
 	if (g_nBulletFalg == TRUE)
 	{
 		g_nBulletYPos--;
 		if (g_nBulletYPos < 0) g_nBulletFalg = FALSE;
+	}
+	if (timeGetTime() - g_dwPrevEnemytime > 300)
+	{
+		g_dwPrevEnemytime = timeGetTime();
+		g_nEnemyYPos++;
+		if (g_nEnemyYPos > 15){
+			Init();
+		}
 	}
 }
 
@@ -97,6 +121,8 @@ void Draw()
 	DrawUI();
 	SetColor(9, 0);
 	ScreenPrint(g_nCharXPos, g_nCharYPos, "▲");
+	SetColor(12, 0);
+	ScreenPrint(g_nEnemyXPos, g_nEnemyYPos, "▼");
 	if (g_nBulletFalg == TRUE)
 	{
 		SetColor(14, 0);
@@ -109,6 +135,9 @@ void Draw()
 int main()
 {
 	ConsoleInit(80, 20);
+
+	srand((unsigned int)time(NULL));
+	Init();
 	while (1)
 	{
 		Update();
