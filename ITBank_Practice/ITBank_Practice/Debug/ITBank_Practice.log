@@ -1,8 +1,38 @@
-﻿Build started 6/18/2015 10:25:58 PM.
+﻿Build started 6/22/2015 5:36:55 PM.
      1>Project "C:\Users\Jinyoung\Desktop\Workspace\ITBank_Practice\ITBank_Practice\ITBank_Practice.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt main.c
          main.c
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(371): warning C4013: 'getch' undefined; assuming extern returning int
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(382): warning C4566: character represented by universal-character-name '\uBA54' cannot be represented in the current code page (1252)
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(382): warning C4566: character represented by universal-character-name '\uBAA8' cannot be represented in the current code page (1252)
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(382): warning C4566: character represented by universal-character-name '\uB9AC' cannot be represented in the current code page (1252)
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(382): warning C4566: character represented by universal-character-name '\uD560' cannot be represented in the current code page (1252)
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(382): warning C4566: character represented by universal-character-name '\uB2F9' cannot be represented in the current code page (1252)
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(382): warning C4566: character represented by universal-character-name '\uC2E4' cannot be represented in the current code page (1252)
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(382): warning C4566: character represented by universal-character-name '\uD328' cannot be represented in the current code page (1252)
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(396): warning C4566: character represented by universal-character-name '\uB9AC' cannot be represented in the current code page (1252)
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(396): warning C4566: character represented by universal-character-name '\uC2A4' cannot be represented in the current code page (1252)
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(396): warning C4566: character represented by universal-character-name '\uD2B8' cannot be represented in the current code page (1252)
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(396): warning C4566: character represented by universal-character-name '\uC5D0' cannot be represented in the current code page (1252)
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(396): warning C4566: character represented by universal-character-name '\uAC12' cannot be represented in the current code page (1252)
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(396): warning C4566: character represented by universal-character-name '\uC744' cannot be represented in the current code page (1252)
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(396): warning C4566: character represented by universal-character-name '\uCD94' cannot be represented in the current code page (1252)
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(396): warning C4566: character represented by universal-character-name '\uAC00' cannot be represented in the current code page (1252)
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(396): warning C4566: character represented by universal-character-name '\uD558' cannot be represented in the current code page (1252)
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(396): warning C4566: character represented by universal-character-name '\uC600' cannot be represented in the current code page (1252)
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(396): warning C4566: character represented by universal-character-name '\uC2B5' cannot be represented in the current code page (1252)
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(396): warning C4566: character represented by universal-character-name '\uB2C8' cannot be represented in the current code page (1252)
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(396): warning C4566: character represented by universal-character-name '\uB2E4' cannot be represented in the current code page (1252)
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(402): warning C4566: character represented by universal-character-name '\uB9AC' cannot be represented in the current code page (1252)
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(402): warning C4566: character represented by universal-character-name '\uC2A4' cannot be represented in the current code page (1252)
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(402): warning C4566: character represented by universal-character-name '\uD2B8' cannot be represented in the current code page (1252)
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(402): warning C4566: character represented by universal-character-name '\uAC00' cannot be represented in the current code page (1252)
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(402): warning C4566: character represented by universal-character-name '\uB4DD' cannot be represented in the current code page (1252)
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(402): warning C4566: character represented by universal-character-name '\uCC3C' cannot be represented in the current code page (1252)
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(402): warning C4566: character represented by universal-character-name '\uC2B5' cannot be represented in the current code page (1252)
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(402): warning C4566: character represented by universal-character-name '\uB2C8' cannot be represented in the current code page (1252)
+     1>c:\users\jinyoung\desktop\workspace\itbank_practice\itbank_practice\main.c(402): warning C4566: character represented by universal-character-name '\uB2E4' cannot be represented in the current code page (1252)
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Jinyoung\Desktop\Workspace\ITBank_Practice\Debug\ITBank_Practice.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Jinyoung\Desktop\Workspace\ITBank_Practice\Debug\ITBank_Practice.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Jinyoung\Desktop\Workspace\ITBank_Practice\Debug\ITBank_Practice.lib" /MACHINE:X86 Debug\main.obj
          ITBank_Practice.vcxproj -> C:\Users\Jinyoung\Desktop\Workspace\ITBank_Practice\Debug\ITBank_Practice.exe
@@ -10,4 +40,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.68
+Time Elapsed 00:00:00.59

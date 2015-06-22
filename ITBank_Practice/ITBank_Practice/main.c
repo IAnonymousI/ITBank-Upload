@@ -160,7 +160,7 @@ int main(){
 	return 0;
 }*/
 
-// 연습2
+/* 연습2
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -195,4 +195,213 @@ int main(){
 	free(p);
 
 	return 0;
+}*/
+
+// 6/22/2015
+
+/* 과제1
+#include <stdio.h>
+
+#define DATA_MAX 5
+
+typedef struct tagArrayList {
+	int arrData[DATA_MAX];
+	int nTotal;
+}ARRAY_LIST, *PARRAY_LIST;
+
+void ListAdd(PARRAY_LIST pArrayList, const int nData);
+void ShowAllList(const PARRAY_LIST pArrayList);
+void ListBackRemove(PARRAY_LIST pArrayList);
+void ListFrontRemove(PARRAY_LIST pArrayList);
+void ListMiddleRemove(PARRAY_LIST pArrayList, const int nIndex);
+void ListInsert(PARRAY_LIST pArrayList, const int nIndex, const int nData);
+
+int main()
+{
+	ARRAY_LIST arrList = { 0, };
+	ListAdd(&arrList, 5);
+	ListAdd(&arrList, 1);
+	ListAdd(&arrList, 4);
+	ListAdd(&arrList, 3);
+	ListAdd(&arrList, 2);
+	ShowAllList(&arrList);
+
+	ListBackRemove(&arrList);
+	ShowAllList(&arrList);
+
+	ListFrontRemove(&arrList);
+	ShowAllList(&arrList);
+
+	ListMiddleRemove(&arrList, 1);
+	ShowAllList(&arrList);
+
+	ListInsert(&arrList, 1, 100);
+	ShowAllList(&arrList);
+
+	getch();
+
+	return 0;
+}
+
+void ListAdd(PARRAY_LIST pArrayList, const int nData)
+{
+	if (pArrayList->nTotal >= DATA_MAX)
+	{
+		printf("리스트가 가득 찼습니다.\n");
+		return;
+	}
+	pArrayList->arrData[pArrayList->nTotal] = nData;
+	pArrayList->nTotal++;
+}
+
+void ShowAllList(const PARRAY_LIST pArrayList)
+{
+	int i;
+	if (pArrayList->nTotal == 0)
+	{
+		printf("리스트 요소가 비어 있습니다.\n");
+		return;
+	}
+	printf("리스트 전체 요소 출력\n");
+	for (i = 0; i < pArrayList->nTotal; i++)
+	{
+		printf("%d\n", pArrayList->arrData[i]);
+	}
+}
+
+void ListBackRemove(PARRAY_LIST pArrayList)
+{
+	if (pArrayList->nTotal == 0)
+	{
+		printf("리스트 요소가 비어 있습니다.\n");
+		return;
+	}
+	pArrayList->arrData[pArrayList->nTotal - 1] = 0;
+	pArrayList->nTotal--;
+	printf("리스트의 마지막 요소를 삭제했습니다.\n");
+}
+
+void ListFrontRemove(PARRAY_LIST pArrayList)
+{
+	int i;
+	if (pArrayList->nTotal == 0)
+	{
+		printf("리스트 요소가 비어 있습니다.\n");
+		return;
+	}
+	for (i = 0; i < pArrayList->nTotal - 1; i++)
+	{
+		pArrayList->arrData[i] = pArrayList->arrData[i + 1];
+	}
+	pArrayList->arrData[pArrayList->nTotal - 1] = 0;
+	pArrayList->nTotal--;
+	printf("리스트의 첫번째 요소를 삭제했습니다.\n");
+}
+
+void ListMiddleRemove(PARRAY_LIST pArrayList, const int nIndex)
+{
+	int i;
+	if (nIndex < 0 || nIndex >= pArrayList->nTotal)
+	{
+		printf("nIndex 값이 잘못 되었습니다.\n");
+		return;
+	}
+	if (pArrayList->nTotal == 0)
+	{
+		printf("리스트 요소가 비어 있습니다.\n");
+		return;
+	}
+	for (i = nIndex; i < pArrayList->nTotal - 1; i++)
+	{
+		pArrayList->arrData[i] = pArrayList->arrData[i + 1];
+	}
+	pArrayList->arrData[pArrayList->nTotal - 1] = 0;
+	pArrayList->nTotal--;
+	printf("리스트의 %d번째 요소를 삭제했습니다.\n", nIndex);
+}
+
+void ListInsert(PARRAY_LIST pArrayList, const int nIndex, const int nData)
+{
+	int i;
+	if (nIndex < 0 || nIndex >= pArrayList->nTotal)
+	{
+		printf("nIndex 값이 잘못 되었습니다.\n");
+		return;
+	}
+	if (pArrayList->nTotal >= DATA_MAX)
+	{
+		printf("리스트가 가득 찼습니다.\n");
+		return;
+	}
+	for (i = pArrayList->nTotal; i > nIndex; i--){
+		pArrayList->arrData[i] = pArrayList->arrData[i - 1];
+	}
+	pArrayList->arrData[nIndex] = nData;
+	pArrayList->nTotal++;
+}*/
+
+// 과제2
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct tagList {
+	int *pData;
+	int nTotal;
+}LIST, *PLIST;
+
+void ListAdd(PLIST pList, const int nData);
+void ShowAllList(PLIST pList);
+
+int main()
+{
+	LIST List = { 0, };
+	ListAdd(&List, 5);
+	ListAdd(&List, 1);
+	ListAdd(&List, 4);
+	ListAdd(&List, 3);
+	ListAdd(&List, 2);
+	ShowAllList(&List);
+
+	if (List.pData != NULL)
+	{
+		free(List.pData);
+		List.pData = NULL;
+	}
+	return 0;
+}
+
+void ListAdd(PLIST pList, const int nData)
+{
+	int i;
+	int *p = NULL;
+	p = (int*)malloc(sizeof(int) * (pList->nTotal + 1));
+	if (p == NULL)
+	{
+		printf("메모리 할당 실패\n");
+		return;
+	}
+	memset(p, 0, sizeof(int) * (pList->nTotal + 1));
+	if (pList->pData != NULL)
+	{
+		for (i = 0; i < pList->nTotal; i++){
+			p[i] = pList->pData[i];
+		}
+		free(pList->pData);
+	}
+	pList->pData = p;
+	pList->pData[pList->nTotal] = nData;
+	pList->nTotal++;
+	printf("리스트에 %d값을 추가하였습니다.\n", nData);
+}
+
+void ShowAllList(PLIST pList){
+	int i;
+	if (pList->nTotal == 0){
+		printf("리스트가 가득 찼습니다.\n");
+		return;
+	}
+	for (i = 0; i < pList->nTotal; i++){
+		printf("%d\n", pList->pData[i]);
+	}
 }
