@@ -1,34 +1,13 @@
-﻿Build started 6/18/2015 5:00:45 PM.
-     1>Project "C:\Users\Jinyoung\Desktop\Workspace\ITBank_ShootingGame\ITBank_ShootingGame\ITBank_ShootingGame.vcxproj" on node 2 (Rebuild target(s)).
+﻿Build started 6/21/2015 11:34:45 PM.
+     1>Project "C:\Users\Jinyoung\Desktop\Workspace\ITBank_ShootingGame\ITBank_ShootingGame\ITBank_ShootingGame.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt main.c
          main.c
-     1>c:\users\jinyoung\desktop\workspace\itbank_shootinggame\itbank_shootinggame\main.c(34): warning C4566: character represented by universal-character-name '\u25A9' cannot be represented in the current code page (1252)
-     1>c:\users\jinyoung\desktop\workspace\itbank_shootinggame\itbank_shootinggame\main.c(35): warning C4566: character represented by universal-character-name '\u25A9' cannot be represented in the current code page (1252)
-     1>c:\users\jinyoung\desktop\workspace\itbank_shootinggame\itbank_shootinggame\main.c(36): warning C4566: character represented by universal-character-name '\u25A9' cannot be represented in the current code page (1252)
-     1>c:\users\jinyoung\desktop\workspace\itbank_shootinggame\itbank_shootinggame\main.c(37): warning C4566: character represented by universal-character-name '\u25A9' cannot be represented in the current code page (1252)
-     1>c:\users\jinyoung\desktop\workspace\itbank_shootinggame\itbank_shootinggame\main.c(38): warning C4566: character represented by universal-character-name '\u25A9' cannot be represented in the current code page (1252)
-     1>c:\users\jinyoung\desktop\workspace\itbank_shootinggame\itbank_shootinggame\main.c(39): warning C4566: character represented by universal-character-name '\u25A9' cannot be represented in the current code page (1252)
-     1>c:\users\jinyoung\desktop\workspace\itbank_shootinggame\itbank_shootinggame\main.c(40): warning C4566: character represented by universal-character-name '\u25A9' cannot be represented in the current code page (1252)
-     1>c:\users\jinyoung\desktop\workspace\itbank_shootinggame\itbank_shootinggame\main.c(41): warning C4566: character represented by universal-character-name '\u25A9' cannot be represented in the current code page (1252)
-     1>c:\users\jinyoung\desktop\workspace\itbank_shootinggame\itbank_shootinggame\main.c(42): warning C4566: character represented by universal-character-name '\u25A9' cannot be represented in the current code page (1252)
-     1>c:\users\jinyoung\desktop\workspace\itbank_shootinggame\itbank_shootinggame\main.c(43): warning C4566: character represented by universal-character-name '\u25A9' cannot be represented in the current code page (1252)
-     1>c:\users\jinyoung\desktop\workspace\itbank_shootinggame\itbank_shootinggame\main.c(44): warning C4566: character represented by universal-character-name '\u25A9' cannot be represented in the current code page (1252)
-     1>c:\users\jinyoung\desktop\workspace\itbank_shootinggame\itbank_shootinggame\main.c(45): warning C4566: character represented by universal-character-name '\u25A9' cannot be represented in the current code page (1252)
-     1>c:\users\jinyoung\desktop\workspace\itbank_shootinggame\itbank_shootinggame\main.c(46): warning C4566: character represented by universal-character-name '\u25A9' cannot be represented in the current code page (1252)
-     1>c:\users\jinyoung\desktop\workspace\itbank_shootinggame\itbank_shootinggame\main.c(47): warning C4566: character represented by universal-character-name '\u25A9' cannot be represented in the current code page (1252)
-     1>c:\users\jinyoung\desktop\workspace\itbank_shootinggame\itbank_shootinggame\main.c(48): warning C4566: character represented by universal-character-name '\u25A9' cannot be represented in the current code page (1252)
-     1>c:\users\jinyoung\desktop\workspace\itbank_shootinggame\itbank_shootinggame\main.c(49): warning C4566: character represented by universal-character-name '\u25A9' cannot be represented in the current code page (1252)
-     1>c:\users\jinyoung\desktop\workspace\itbank_shootinggame\itbank_shootinggame\main.c(50): warning C4566: character represented by universal-character-name '\u25A9' cannot be represented in the current code page (1252)
-     1>c:\users\jinyoung\desktop\workspace\itbank_shootinggame\itbank_shootinggame\main.c(123): warning C4566: character represented by universal-character-name '\u25B2' cannot be represented in the current code page (1252)
-     1>c:\users\jinyoung\desktop\workspace\itbank_shootinggame\itbank_shootinggame\main.c(125): warning C4566: character represented by universal-character-name '\u25BC' cannot be represented in the current code page (1252)
-     1>c:\users\jinyoung\desktop\workspace\itbank_shootinggame\itbank_shootinggame\main.c(129): warning C4566: character represented by universal-character-name '\u2605' cannot be represented in the current code page (1252)
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Jinyoung\Desktop\Workspace\ITBank_ShootingGame\Debug\ITBank_ShootingGame.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Jinyoung\Desktop\Workspace\ITBank_ShootingGame\Debug\ITBank_ShootingGame.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Jinyoung\Desktop\Workspace\ITBank_ShootingGame\Debug\ITBank_ShootingGame.lib" /MACHINE:X86 Debug\main.obj
-     1>WhiteBoardConsole_d.lib(main.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'WhiteBoardConsole_d.lib(main.obj)' or at 'C:\Users\Jinyoung\Desktop\Workspace\ITBank_ShootingGame\Debug\vc110.pdb'; linking object as if no debug info
          ITBank_ShootingGame.vcxproj -> C:\Users\Jinyoung\Desktop\Workspace\ITBank_ShootingGame\Debug\ITBank_ShootingGame.exe
-     1>Done Building Project "C:\Users\Jinyoung\Desktop\Workspace\ITBank_ShootingGame\ITBank_ShootingGame\ITBank_ShootingGame.vcxproj" (Rebuild target(s)).
+     1>Done Building Project "C:\Users\Jinyoung\Desktop\Workspace\ITBank_ShootingGame\ITBank_ShootingGame\ITBank_ShootingGame.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:01.39
+Time Elapsed 00:00:00.87
