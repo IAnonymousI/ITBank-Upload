@@ -1,4 +1,4 @@
-﻿Build started 6/21/2015 11:34:45 PM.
+﻿Build started 6/22/2015 10:10:51 PM.
      1>Project "C:\Users\Jinyoung\Desktop\Workspace\ITBank_ShootingGame\ITBank_ShootingGame\ITBank_ShootingGame.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt main.c
@@ -10,4 +10,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.87
+Time Elapsed 00:00:00.93

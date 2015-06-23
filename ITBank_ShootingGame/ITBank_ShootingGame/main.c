@@ -22,14 +22,6 @@ int g_nBulletXPos[5];
 int g_nBulletYPos[5];
 int g_nBulletKeyFlag[5] = {FALSE, FALSE, FALSE, FALSE, FALSE};
 int g_nBulletKeyPressed = 0;
-int g_nPowerUpFlag = FALSE;
-int g_nPowerUpKeyFlag = FALSE;
-int g_nPowerUpItemFlag = FALSE;
-int g_nPowerUpPossessionFlag = FALSE;
-int g_nPowerUpBulletXPos[59];
-int g_nPowerUpBulletYPos;
-int g_nPowerUpXPos;
-int g_nPowerUpYPos;
 int g_nItemXPos;
 int g_nItemYPos;
 int g_nItemKeyFlag = FALSE;
@@ -39,24 +31,20 @@ int g_nCoinXPos;
 int g_nCoinYPos;
 DWORD g_dwPrevEnemytime;
 DWORD g_dwPrevItemtime;
-DWORD g_dwPrevPowerUptime;
-DWORD g_dwPrevPowerUpBullettime;
 char strTemp[100];
 int g_nLife = 5;
 int g_nTimeElapsed = 1;
 int g_nKills = 0;
 char strTemp2[100];
 char strTemp3[100];
-char strTemp4[100];
 
+boolean checkLeftBoundary();
 boolean checkRightBoundary();
+boolean checkUpBoundary();
 boolean checkDownBoundary();
-void activatePowerUp();
 void Init(i);
 void ItemInit();
 void CoinInit();
-void PowerUpInit();
-void PowerUpBulletInit();
 void DrawUI();
 void KeyProc();
 void Update();
@@ -74,7 +62,6 @@ int main()
 	}
 	ItemInit();
 	CoinInit();
-	PowerUpInit();
 	while (1)
 	{
 		Update();
@@ -103,13 +90,12 @@ boolean checkRightBoundary(){
 	return indic;
 }
 
-void activatePowerUp(){
-	int i;
-	PowerUpBulletInit();
-	SetColor(7, 0);
-	for (i = 0; i < 59; i++){
-		ScreenPrint(g_nPowerUpBulletXPos[i], g_nPowerUpBulletYPos, "O");
+boolean checkUpBoundary(){
+	boolean indic = 0;
+	if (g_nCharYPos <= 0){
+		indic = 1;
 	}
+	return indic;
 }
 
 boolean checkDownBoundary(){
@@ -136,20 +122,6 @@ void CoinInit(){
 	srand((unsigned int)time(NULL));
 	g_nCoinXPos = (rand() % 59) + 10;
 	g_nCoinYPos = (rand() % 20);
-}
-
-void PowerUpInit(){
-	srand((unsigned int)time(NULL));
-	g_nPowerUpXPos = (rand() % 59) + 10;
-	g_nPowerUpYPos = (rand() % 20);
-}
-
-void PowerUpBulletInit(){
-	int i;
-	for (i = 0; i < 60; i++){
-		g_nPowerUpBulletXPos[i] = i + 10;
-	}
-	g_nPowerUpBulletYPos = 19;
 }
 
 void DrawUI()
@@ -198,7 +170,9 @@ void KeyProc()
 		}
 		if (GetKeyDownState(VK_UP) == KEY_DOWN)
 		{
-			g_nCharYPos--;
+			if (checkUpBoundary() == 0){
+				g_nCharYPos--;
+			}
 		}
 		if (GetKeyDownState(VK_DOWN) == KEY_DOWN)
 		{
@@ -223,18 +197,6 @@ void KeyProc()
 						g_nBulletXPos[g_nBulletKeyPressed] = g_nCharXPos;
 						g_nBulletYPos[g_nBulletKeyPressed] = g_nCharYPos - 1;
 					}
-				}
-			}
-		}
-		if (GetKeyDownState(VK_SHIFT) == KEY_DOWN){
-			g_nPowerUpKeyFlag = TRUE;
-		}
-		if (GetKeyDownState(VK_SHIFT) == KEY_UP){
-			if (g_nPowerUpKeyFlag = TRUE){
-				g_nPowerUpKeyFlag = FALSE;
-				if (g_nPowerUpFlag == FALSE && g_nPowerUpPossessionFlag == TRUE){
-					g_nPowerUpFlag = TRUE;
-					g_nPowerUpPossessionFlag = FALSE;
 				}
 			}
 		}
@@ -268,20 +230,11 @@ void Update()
 		g_nLife++;
 		g_nItemKeyFlag = FALSE;
 	}
-	if (g_nPowerUpItemFlag == TRUE && ((g_nPowerUpXPos == g_nCharXPos) || (g_nPowerUpXPos == (g_nCharXPos + 1))) && (g_nPowerUpYPos == g_nCharYPos)){
-		PowerUpInit();
-		g_nPowerUpPossessionFlag = TRUE;
-		g_nPowerUpItemFlag = FALSE;
-	}
-	if (timeGetTime() - g_dwPrevPowerUptime > 20000){
-		g_dwPrevPowerUptime = timeGetTime();
-		g_nPowerUpItemFlag = TRUE;
-	}
 	if (((g_nCoinXPos == g_nCharXPos) || (g_nCoinXPos == (g_nCharXPos + 1))) && (g_nCoinYPos == g_nCharYPos)){
 		CoinInit();
 		g_nTimeElapsed += 200;
 	}
-	if (timeGetTime() - g_dwPrevItemtime > 3000)
+	if (timeGetTime() - g_dwPrevItemtime > 30000)
 	{
 		g_dwPrevItemtime = timeGetTime();
 		g_nItemKeyFlag = TRUE;
@@ -297,7 +250,7 @@ void Update()
 			}
 		}
 	}
-	if (timeGetTime() - g_dwPrevEnemytime > 300)
+	if (timeGetTime() - g_dwPrevEnemytime > 400)
 	{
 		g_dwPrevEnemytime = timeGetTime();
 		for (i = 0; i < 3; i++){
@@ -306,13 +259,6 @@ void Update()
 				Init(i);
 				g_nLife--;
 			}
-		}
-	}
-	if (g_nPowerUpFlag == TRUE && timeGetTime() - g_dwPrevPowerUpBullettime > 200){
-		g_dwPrevPowerUpBullettime = timeGetTime();
-		g_nPowerUpBulletYPos++;
-		if (g_nPowerUpBulletYPos == 0){
-			g_nPowerUpFlag = FALSE;
 		}
 	}
 }	
@@ -343,18 +289,10 @@ void Draw()
 		SetColor(13, 0);
 		ScreenPrint(g_nItemXPos, g_nItemYPos, "+");
 	}
-	if (g_nPowerUpItemFlag == TRUE){
-		SetColor(1, 0);
-		ScreenPrint(g_nPowerUpXPos, g_nPowerUpYPos, "@");
-	}
-	if (g_nPowerUpFlag == TRUE){
-		activatePowerUp();
-	}
 
 	sprintf(strTemp, "%d", g_nLife);
 	sprintf(strTemp2, "%d", g_nTimeElapsed);
 	sprintf(strTemp3, "%d", g_nKills);
-	sprintf(strTemp4, "%d", g_nPowerUpPossessionFlag);
 
 	SetColor(15, 0);
 	ScreenPrint(0, 22, "Life: ");
@@ -363,8 +301,6 @@ void Draw()
 	ScreenPrint(7, 24, strTemp2);
 	ScreenPrint(0, 23, "Kills: ");
 	ScreenPrint(7, 23, strTemp3);
-	ScreenPrint(0, 21, "Power: ");
-	ScreenPrint(7, 21, strTemp4);
 
 	ScreenFlipping();
 }
