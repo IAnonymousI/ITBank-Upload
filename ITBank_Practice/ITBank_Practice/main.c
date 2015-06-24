@@ -340,7 +340,7 @@ void ListInsert(PARRAY_LIST pArrayList, const int nIndex, const int nData)
 	pArrayList->nTotal++;
 }*/
 
-// 과제2
+/* 과제2
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -404,4 +404,202 @@ void ShowAllList(PLIST pList){
 	for (i = 0; i < pList->nTotal; i++){
 		printf("%d\n", pList->pData[i]);
 	}
+}*/
+
+// 6/23/2015
+
+// 과제1/과제2
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct tagList {
+	int *pData;
+	int nTotal;
+}LIST, *PLIST;
+
+void ListAdd(PLIST pList, const int nData);
+void ShowAllList(const PLIST pList);
+void ListBackRemove(PLIST pList);
+void ListFrontRemove(PLIST pList);
+void ListMiddleRemove(PLIST pList, const int nIndex);
+void ListInsert(PLIST pList, const int nIndex, const int nData);
+
+int main()
+{
+	LIST List = { 0, };
+	ListAdd(&List, 5);
+	ListAdd(&List, 1);
+	ListAdd(&List, 4);
+	ListAdd(&List, 3);
+	ListAdd(&List, 2);
+	ShowAllList(&List);
+
+	ListBackRemove(&List);
+	ShowAllList(&List);
+
+	ListFrontRemove(&List);
+	ShowAllList(&List);
+
+	ListMiddleRemove(&List, 2);
+	ShowAllList(&List);
+
+	ListInsert(&List, 1, 100);
+	ShowAllList(&List);
+
+	getch();
+
+	if (List.pData != NULL)
+	{
+		free(List.pData);
+		List.pData = NULL;
+	}
+	return 0;
+}
+
+void ListAdd(PLIST pList, const int nData)
+{
+	int *p = NULL;
+	p = (int*)malloc(sizeof(int) * (pList->nTotal + 1));
+	if (p == NULL)
+	{
+		printf("메모리 할당 실패\n");
+		return;
+	}
+	memset(p, 0, sizeof(int) * (pList->nTotal + 1));
+	if (pList->pData != NULL)
+	{
+		//memcpy 인자값들: (복사를 받을 대상의 시작 주소값, 복사를 할 원본 메모리의 시작 주소값, 복사할 메모리의 사이즈)
+		memcpy(p, pList->pData, sizeof(int) * pList->nTotal);
+		free(pList->pData);
+	}
+	pList->pData = p;
+	pList->pData[pList->nTotal] = nData;
+	pList->nTotal++;
+	printf("리스트에 %d값을 추가하였습니다.\n", nData);
+}
+
+void ShowAllList(const PLIST pList){
+	int i;
+	if (pList->nTotal == 0){
+		printf("리스트가 비어 있습니다.\n");
+		return;
+	}
+	printf("리스트 전체 요소 출력\n");
+	for (i = 0; i < pList->nTotal; i++){
+		printf("%d\n", pList->pData[i]);
+	}
+}
+
+void ListBackRemove(PLIST pList){
+	int* p = NULL;
+	if (pList->nTotal == 0){
+		printf("리스트가 요소가 비어 있습니다.\n");
+		return;
+	}
+	if (pList->nTotal == 1){
+		free(pList->pData);
+		pList->pData = p;
+		pList->nTotal--;
+		return;
+	}
+	p = (int*)malloc(sizeof(int) * (pList->nTotal - 1));
+	if (p == NULL)
+	{
+		printf("메모리 할당 실패\n");
+		return;
+	}
+
+	memset(p, 0, sizeof(int) * (pList->nTotal - 1));
+	memcpy(p, pList->pData, sizeof(int) * (pList->nTotal - 1));
+	free(pList->pData);
+	pList->pData = p;
+	pList->nTotal--;
+	printf("리스트 마지막 요소를 삭제했습니다.\n");
+}
+
+void ListFrontRemove(PLIST pList){
+	int* p = NULL;
+	if (pList->nTotal == 0){
+		printf("리스트 요소가 비었습니다.");
+		return;
+	}
+	if (pList->nTotal != 1){
+		p = (int*)malloc(sizeof(int) * (pList->nTotal - 1));
+		if (p == NULL){
+			printf("메모리 할당 실패\n");
+			return;
+		}
+		memset(p, 0, sizeof(int) * (pList->nTotal - 1));
+		memcpy(p, pList->pData + 1, sizeof(int) * (pList->nTotal - 1));
+	}
+	free(pList->pData);
+	pList->pData = p;
+	pList->nTotal--;
+	printf("리스트 첫번째 요소를 삭제했습니다.\n");
+}
+
+void ListMiddleRemove(PLIST pList, const int nIndex){
+	int* p = NULL;
+	if (pList->nTotal == 0){
+		printf("리스트 요소가 비었습니다.");
+		return;
+	}
+	if (nIndex < 0 || nIndex >= pList->nTotal){
+		printf("nIndex의 값이 잘못되었습니다.");
+		return;
+	}
+	if (pList->nTotal != 1){
+		p = (int*)malloc(sizeof(int) * (pList->nTotal - 1));
+		if (p == NULL){
+			printf("메모리 할당 실패\n");
+			return;
+		}
+		memset(p, 0, sizeof(int) * (pList->nTotal - 1));
+		memcpy(p, pList->pData, sizeof(int) * nIndex);
+		memcpy(p + nIndex, pList->pData + (nIndex + 1), sizeof(int) * ((pList->nTotal - 1) - nIndex));
+	}
+	free(pList->pData);
+	pList->pData = p;
+	pList->nTotal--;
+	printf("리스트 %d번째 요소를 삭제했습니다.\n", nIndex);
+}
+
+void ListInsert(PLIST pList, const int nIndex, const int nData){
+	int* p = NULL;
+	if (nIndex < 0 || nIndex > pList->nTotal){
+		printf("nIndex의 값이 잘못되었습니다.");
+		return;
+	}
+	if (pList->nTotal == 0){
+		p = (int*)malloc(sizeof(int));
+		if (p == NULL){
+			printf("메모리 할당 실패\n");
+			return;
+		}
+		pList->pData[0] = nData;
+		return;
+	}
+	p = (int*)malloc(sizeof(int) * (pList->nTotal + 1));
+	if (p == NULL)
+	{
+		printf("메모리 할당 실패\n");
+		return;
+	}
+	memset(p, 0, sizeof(int) * (pList->nTotal + 1));
+	if (nIndex == 0){
+		memcpy(p + 1, pList->pData, sizeof(int) * pList->nTotal);
+	}
+	else if (nIndex == pList->nTotal){
+		memcpy(p, pList->pData, sizeof(int) * pList->nTotal);
+	}
+	else{
+		memcpy(p, pList->pData, sizeof(int) * nIndex);
+		memcpy(p + nIndex + 1, pList->pData + nIndex, sizeof(int) * (pList->nTotal - nIndex));
+	}
+	free(pList->pData);
+	pList->pData = p;
+	pList->pData[nIndex] = nData;
+	pList->nTotal++;
+	printf("리스트 %d를 %d번째 요소에 삽입했습니다.\n", nData, nIndex);
 }
