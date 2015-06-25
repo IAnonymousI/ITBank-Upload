@@ -408,7 +408,7 @@ void ShowAllList(PLIST pList){
 
 // 6/23/2015
 
-// 과제1/과제2
+/* 과제1/과제2
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -602,4 +602,102 @@ void ListInsert(PLIST pList, const int nIndex, const int nData){
 	pList->pData[nIndex] = nData;
 	pList->nTotal++;
 	printf("리스트 %d를 %d번째 요소에 삽입했습니다.\n", nData, nIndex);
+}*/
+
+// 6/24/2015
+
+// 과제
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct tagList{
+	int nData;
+	struct tagList* pNext;
+}LIST;
+
+typedef struct tagLinkedList{
+	LIST* pHead;
+	LIST* pTail;
+}LINKEDLIST;
+
+void ListInit(LINKEDLIST* pLinkedList);
+void ListAdd(LINKEDLIST* pLinkedList, const int nData);
+void ShowAllList(LINKEDLIST* pLinkedList);
+
+
+int main(){
+	LINKEDLIST LinkedList = { 0, };
+	ListInit(&LinkedList);
+	ShowAllList(&LinkedList);
+	ListAdd(&LinkedList, 5);
+	ShowAllList(&LinkedList);
+	ListAdd(&LinkedList, 1);
+	ShowAllList(&LinkedList);
+	ListAdd(&LinkedList, 4);
+	ShowAllList(&LinkedList);
+	ListAdd(&LinkedList, 3);
+	ShowAllList(&LinkedList);
+	ListAdd(&LinkedList, 2);
+	ShowAllList(&LinkedList);
+	
+	getch();
+	free(&LinkedList);
+	return 0;
+}
+
+void ListInit(LINKEDLIST* pLinkedList){
+	pLinkedList->pHead = (LIST*)malloc(sizeof(LIST));
+	memset(pLinkedList->pHead, 0, sizeof(LIST));
+
+	pLinkedList->pTail = (LIST*)malloc(sizeof(LIST));
+	memset(pLinkedList->pTail, 0, sizeof(LIST));
+
+	pLinkedList->pHead->pNext = pLinkedList->pTail;
+	pLinkedList->pTail->pNext = NULL;
+}
+
+void ListAdd(LINKEDLIST* pLinkedList, const int nData){
+	LIST* pNewList = (LIST*)malloc(sizeof(LIST));
+	if (pNewList == NULL){
+		printf("메모리 할당 실패\n");
+		return;
+	}
+
+	memset(pNewList, 0, sizeof(LIST));
+	pLinkedList->pTail->nData = nData;
+	pLinkedList->pTail->pNext = pNewList;
+	pLinkedList->pTail = pNewList;
+	pLinkedList->pTail->pNext = NULL;
+	free(pNewList);
+	printf("리스트에 %d의 값을 더하였습니다.\n", nData);
+}
+
+void ShowAllList(LINKEDLIST* pLinkedList){
+	if (pLinkedList->pHead->pNext == pLinkedList->pTail){
+		printf("리스트가 비어 있습니다.\n");
+		return;
+	}
+	printf("리스트 전체 요소 출력\n");
+	int i, rep = 1;
+	LIST* pLastList = (LIST*)malloc(sizeof(LIST));
+	if (pLastList == NULL){
+		printf("메모리 할당 실패\n");
+		return;
+	}
+	while (1){
+		for (i = 0; i < rep; i++){
+			if (i == 0){
+				pLastList = pLinkedList->pHead->pNext;
+			}
+			else{
+				pLastList = pLastList->pNext;
+			}
+		}
+		if (pLastList == pLinkedList->pTail){
+			return;
+		}
+		printf("%d\n", pLastList->nData);
+		rep++;
+	}
 }
