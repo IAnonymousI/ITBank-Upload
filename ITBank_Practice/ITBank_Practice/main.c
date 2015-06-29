@@ -704,7 +704,7 @@ void ShowAllList(LINKEDLIST* pLinkedList){
 
 // 6/25/2015
 
-// 과제1/과제2/과제3/과제4
+/* 과제1/과제2/과제3/과제4
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -883,5 +883,218 @@ void Release(LINKEDLIST* pLinkedList){
 		pTempList = pCurList->pNext;
 		free(pCurList);
 		pCurList = pTempList;
+	} while (pCurList != pLinkedList->pTail);
+}*/
+
+// 6/26/2015
+
+// 과제
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct tagList{
+	struct tagList* pPrev;
+	struct tagList* pNext;
+	int nData;
+}LIST, *PLIST;
+
+typedef struct tagLinkedList{
+	PLIST pHead;
+	PLIST pTail;
+}LINKEDLIST, *PLINKEDLIST;
+
+void ListInit(PLINKEDLIST pLinkedList);
+void ListAdd(PLINKEDLIST pLinkedList, const int nData);
+void ShowAllList(PLINKEDLIST pLinkedList);
+void ShowAllList2(PLINKEDLIST pLinkedList);
+void ListBackRemove(PLINKEDLIST pLinkedList);
+void ListFrontRemove(PLINKEDLIST pLinkedList);
+void ListMiddleRemove(PLINKEDLIST pLinkedList, const int nIndex);
+void ListInsert(PLINKEDLIST pLinkedList, const int nIndex, const int nData);
+void Release(PLINKEDLIST pLinkedList);
+
+int main(){
+
+	LINKEDLIST LinkedList = { 0, };
+	ListInit(&LinkedList);
+
+	ListAdd(&LinkedList, 5);
+	ListAdd(&LinkedList, 1);
+	ListAdd(&LinkedList, 4);
+	ListAdd(&LinkedList, 3);
+	ListAdd(&LinkedList, 2);
+	ShowAllList(&LinkedList);
+	ShowAllList2(&LinkedList);
+
+	ListBackRemove(&LinkedList);
+	ShowAllList(&LinkedList);
+	ShowAllList2(&LinkedList);
+
+	ListFrontRemove(&LinkedList);
+	ShowAllList(&LinkedList);
+	ShowAllList2(&LinkedList);
+
+	ListMiddleRemove(&LinkedList, 1);
+	ShowAllList(&LinkedList);
+	ShowAllList2(&LinkedList);
+
+	ListInsert(&LinkedList, 1, 100);
+	ShowAllList(&LinkedList);
+	ShowAllList2(&LinkedList);
+
+	Release(&LinkedList);
+
+	getch();
+
+	return 0;
+}
+
+void ListInit(PLINKEDLIST pLinkedList){
+	pLinkedList->pHead = (PLIST)malloc(sizeof(LIST));
+	memset(pLinkedList->pHead, 0, sizeof(LIST));
+	pLinkedList->pTail = (PLIST)malloc(sizeof(LIST));
+	memset(pLinkedList->pTail, 0, sizeof(LIST));
+
+	pLinkedList->pHead->pPrev = NULL;
+	pLinkedList->pHead->pNext = pLinkedList->pTail;
+	pLinkedList->pTail->pPrev = pLinkedList->pHead;
+	pLinkedList->pTail->pNext = NULL;
+}
+
+void ListAdd(PLINKEDLIST pLinkedList, const int nData){
+	PLIST pNewList = (PLIST)malloc(sizeof(LIST));
+	if (pNewList == NULL){
+		printf("메모리 할당을 실패했습니다.\n");
+		return;
+	}
+	memset(pNewList, 0, sizeof(LIST));
+	pLinkedList->pTail->nData = nData;
+	pLinkedList->pTail->pNext = pNewList;
+	pNewList->pPrev = pLinkedList->pTail;
+	pLinkedList->pTail = pNewList;
+}
+
+void ShowAllList(PLINKEDLIST pLinkedList){
+	PLIST pCurList = pLinkedList->pHead->pNext;
+	if (pLinkedList->pHead->pNext == pLinkedList->pTail){
+		printf("리스트가 비어있습니다.\n");
+		return;
+	}
+	printf("리스트 전체 요소 출력\n");
+	while (pCurList != pLinkedList->pTail){
+		printf("%d\n", pCurList->nData);
+		pCurList = pCurList->pNext;
+	}
+}
+
+void ShowAllList2(PLINKEDLIST pLinkedList){
+	PLIST pCurList = pLinkedList->pTail->pPrev;
+	if (pLinkedList->pHead->pNext == pLinkedList->pTail){
+		printf("리스트가 비어있습니다.\n");
+		return;
+	}
+	printf("리스트 전체 요소 역순으로 출력\n");
+	while (pCurList != pLinkedList->pHead){
+		printf("%d\n", pCurList->nData);
+		pCurList = pCurList->pPrev;
+	}
+}
+
+void ListBackRemove(PLINKEDLIST pLinkedList){
+	PLIST pCurList = pLinkedList->pTail;
+	PLIST pDelList = NULL;
+	if (pLinkedList->pHead->pNext == pLinkedList->pTail){
+		printf("리스트가 비어있습니다.\n");
+		return;
+	}
+	pDelList = pCurList->pPrev;
+	pCurList->pPrev = pDelList->pPrev;
+	pDelList->pPrev->pNext = pCurList;
+	free(pDelList);
+}
+
+void ListFrontRemove(PLINKEDLIST pLinkedList){
+	PLIST pCurList = pLinkedList->pHead;
+	PLIST pDelList = NULL;
+	if (pLinkedList->pHead->pNext == pLinkedList->pTail){
+		printf("리스트가 비어있습니다.\n");
+		return;
+	}
+	pDelList = pCurList->pNext;
+	pCurList->pNext = pDelList->pNext;
+	pDelList->pNext->pPrev = pCurList;
+	free(pDelList);
+}
+
+void ListMiddleRemove(PLINKEDLIST pLinkedList, const int nIndex){
+	LIST* pCurList = pLinkedList->pHead;
+	LIST* pDelList = NULL;
+	int rep = 0;
+	if (nIndex < 0) {
+		printf("Index값이 잘못되었습니다.\n");
+		return;
+	}
+	if (pLinkedList->pHead->pNext == pLinkedList->pTail) {
+		printf("리스트가 비어있습니다.\n");
+		return;
+	}
+	while (pCurList->pNext != pLinkedList->pTail)
+	{
+		if (rep == nIndex)
+			break;
+		pCurList = pCurList->pNext;
+		rep++;
+	}
+	if (pCurList->pNext == pLinkedList->pTail) {
+		printf("%d번째 리스트는 존재하지 않습니다.\n", nIndex);
+		return;
+	}
+	pDelList = pCurList->pNext;
+	pCurList->pNext = pDelList->pNext;
+	pDelList->pNext->pPrev = pCurList;
+	free(pDelList);
+	printf("%d번째 리스트를 삭제했습니다.\n", nIndex);
+}
+
+void ListInsert(PLINKEDLIST pLinkedList, const int nIndex, const int nData){
+	LIST* pCurList = pCurList = pLinkedList->pHead;
+	LIST* pNewList = NULL;
+	int rep = 0;
+	if (nIndex < 0) {
+		printf("index값이 잘못되었습니다.\n");
+		return;
+	}
+	while (pCurList->pNext != pLinkedList->pTail)
+	{
+		if (rep == nIndex)
+			break;
+		pCurList = pCurList->pNext;
+		rep++;
+	}
+	if (pCurList->pNext == pLinkedList->pTail) {
+		printf("%d번째 리스트는 존재하지 않습니다.\n", nIndex);
+		return;
+	}
+	pNewList = (LIST*)malloc(sizeof(LIST));
+	if (pNewList == NULL) {
+		printf("메모리 할당 실패\n");
+		return;
+	}
+	pNewList->nData = nData;
+	pNewList->pNext = pCurList->pNext;
+	pCurList->pNext->pPrev = pNewList;
+	pCurList->pNext = pNewList;
+	pNewList->pPrev = pCurList;
+	printf("%d번째에 리스트를 삽입했습니다.\n", nIndex);
+}
+
+void Release(PLINKEDLIST pLinkedList){
+	LIST* pCurList = pLinkedList->pHead;
+	LIST* pDelList = NULL;
+	do {
+		pDelList = pCurList->pNext;
+		free(pCurList);
+		pCurList = pDelList;
 	} while (pCurList != pLinkedList->pTail);
 }
