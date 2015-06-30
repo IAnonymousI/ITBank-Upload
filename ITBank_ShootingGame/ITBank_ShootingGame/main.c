@@ -14,8 +14,8 @@
 #pragma comment(lib,"WhiteBoardConsole.lib")
 #endif
 
-int g_nCharXPos = 30;
-int g_nCharYPos = 14;
+int g_nCharXPos = 40;
+int g_nCharYPos = 15;
 DWORD g_dwPrevChartime;
 int g_nBulletFalg[5] = {FALSE, FALSE, FALSE, FALSE, FALSE};
 int g_nBulletXPos[5];
@@ -31,6 +31,8 @@ int g_nCoinXPos;
 int g_nCoinYPos;
 DWORD g_dwPrevEnemytime;
 DWORD g_dwPrevItemtime;
+DWORD g_dwPrevCointime;
+DWORD g_dwPrevItemtime2;
 char strTemp[100];
 int g_nLife = 5;
 int g_nTimeElapsed = 1;
@@ -113,15 +115,13 @@ void Init(int i)
 }
 
 void ItemInit(){
-	srand((unsigned int)time(NULL));
 	g_nItemXPos = (rand() % 59) + 10;
-	g_nItemYPos = (rand() % 20);
+	g_nItemYPos = 0;
 }
 
 void CoinInit(){
-	srand((unsigned int)time(NULL));
 	g_nCoinXPos = (rand() % 59) + 10;
-	g_nCoinYPos = (rand() % 20);
+	g_nCoinYPos = 0;
 }
 
 void DrawUI()
@@ -239,7 +239,22 @@ void Update()
 		g_dwPrevItemtime = timeGetTime();
 		g_nItemKeyFlag = TRUE;
 	}
-
+	if (timeGetTime() - g_dwPrevCointime > 300)
+	{
+		g_dwPrevCointime = timeGetTime();
+		g_nCoinYPos++;
+		if (g_nCoinYPos > 19){
+			CoinInit();
+		}
+	}
+	if (timeGetTime() - g_dwPrevItemtime2 > 500)
+	{
+		g_dwPrevItemtime2 = timeGetTime();
+		g_nItemYPos++;
+		if (g_nItemYPos > 19){
+			ItemInit();
+		}
+	}
 	for (i = 0; i < 5; i++){
 		if (g_nBulletFalg[i] == TRUE)
 		{
