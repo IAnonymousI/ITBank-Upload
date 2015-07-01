@@ -34,14 +34,18 @@ typedef struct tagLinkedList{
 }LINKEDLIST, *PLINKEDLIST;
 
 int ListInit(PLINKEDLIST pLinkedList);
+int areSameStrings(char* string1, char* string2);
 int isValidPersonInfo(PERSON_INFO stPersonInfo);
 int isValidStrID(char strID[15]);
 int isValidStrName(char strName[15]);
 int isValidStrPhone(char strPhone[15]);
 int Push(PLINKEDLIST pLinkedList, PERSON_INFO stPersonInfo);
+PERSON_INFO Pull(PLINKEDLIST pLinkedList, int rep);
+int ShowAllList(PLINKEDLIST pLinkedList);
 int Release(PLINKEDLIST pLinkedList);
 
 int main(){
+	int rep;
 	int result;
 	int nMainMenu;
 	int nSubMenu;
@@ -61,7 +65,13 @@ int main(){
 	printf("고객 관리 프로그램\n");
 
 	while (1){
+		MAIN:
+		system("cls");
+		rep = 1;
 		memset(&stTempPersonInfo, 0, sizeof(PERSON_INFO));
+		memset(tempStrID, 0, sizeof(tempStrID));
+		memset(tempStrName, 0, sizeof(tempStrName));
+		memset(tempStrPhone, 0, sizeof(tempStrPhone));
 		printf("\n------------------------------------------\n");
 		printf("1. 고객 등록\n");
 		printf("2. 고객 수정\n");
@@ -77,7 +87,8 @@ int main(){
 
 		switch (nMainMenu){
 		case REGISTRATION:
-			REG:
+		REG :
+			system("cls");
 			printf("고객님의 정보를 입력해 주십시오.\n\n");
 			Sleep(2000);
 			fflush(stdin);
@@ -105,7 +116,7 @@ int main(){
 				}
 			}
 			while (1){
-				printf("무엇을 하시겠습니까?\n\n1. 다시 등록\n2. 메인 메뉴로\n\n>");
+				printf("무엇을 하시겠습니까?\n\n1. 다시 등록\n2. 메인 메뉴로\n\n> ");
 				scanf("%d", &nSubMenu);
 				if (nSubMenu == 1){
 					goto REG;
@@ -113,27 +124,57 @@ int main(){
 				else if (nSubMenu == 2){
 					break;
 				}
+				else{
+					printf("잘못 입력하셨습니다. 다시 입력해주세요.\n");
+				}
 			}
 		case MODIFY:
 			break;
 		case SEARCH:
-			printf("무엇으로 조회를 하시겠습니까?\n\n1. 주민등록번호\n2. 성함\n3. 전화번호\n\n> ");
+			SEAR:
+			rep = 0;
+			system("cls");
+			printf("주민등록번호를 입력하세요.\n\n> ");
+			fflush(stdin);
+			gets(tempStrID);
+			while (Pull(&LinkedList, rep).strID[0] != NULL){
+				stTempPersonInfo = Pull(&LinkedList, rep);
+				if (areSameStrings(tempStrID, stTempPersonInfo.strID)){
+					printf("조회가 성공적이었습니다.\n\n");
+					printf("정보:\n\n주민등록번호: %s\n성함: %s\n연세: %d\n전화번호: %s\n", stTempPersonInfo.strID, stTempPersonInfo.strName, stTempPersonInfo.nAge, stTempPersonInfo.strPhone);
+					SEARAGAIN:+	
+					printf("\n계속 하시겠습니까?\n1. 예\t2. 아니요.\n\n> ");
+					scanf("%d", &nSubMenu);
+					if (nSubMenu == 1){
+						goto SEAR;
+					}
+					else if (nSubMenu == 2){
+						goto MAIN;
+					}
+					else{
+						printf("\n잘못 입력하셨습니다. 다시 입력하세요.\n");
+						Sleep(2000);
+						goto SEARAGAIN;
+					}
+				}
+				rep++;
+			}
+			printf("입력하신 주민등록번호로 찾을수 없었습니다.\n");
+			SEARAGAIN2:
+			printf("\n계속 하시겠습니까?\n1. 예\t2. 아니요.\n\n> ");
 			scanf("%d", &nSubMenu);
 			if (nSubMenu == 1){
-				printf("주민등록번호: ");
-				fflush(stdin);
-				gets(tempStrID);
+				goto SEAR;
 			}
 			else if (nSubMenu == 2){
-				
-			}
-			else if (nSubMenu == 3){
-				
+				break;
 			}
 			else{
-				printf("잘못 입력하셨습니다. 다시 선택하세요.\n");
-				goto 
+				printf("\n잘못 입력하셨습니다. 다시 입력하세요.\n");
+				Sleep(2000);
+				goto SEARAGAIN2;
 			}
+			Sleep(2000);
 			break;
 		case DELETE:
 			break;
@@ -152,7 +193,6 @@ int main(){
 			break;
 		}
 	}
-
 	return 0;
 }
 
@@ -179,20 +219,35 @@ int ListInit(PLINKEDLIST pLinkedList){
 	}
 	pLinkedList->pHead->pNext = pLinkedList->pTail;
 	pLinkedList->pTail->pPrev = pLinkedList->pHead;
+	pLinkedList->pTail->stPersonInfo.strID[0] = NULL;
 	return SUCCESS;
 }
 
+int areSameStrings(char* string1, char* string2){
+	int i;
+	int test = SUCCESS;
+	if ((sizeof(string1)/sizeof(string1[0])) != (sizeof(string2)/sizeof(string2[0]))){
+		test = FAILURE;
+	}
+	for (i = 0; i < (sizeof(string1) / sizeof(string1[0])); i++){
+		if (string1[i] != string2[i]){
+			test = FAILURE;
+		}
+	}
+	return test;
+}
+
 int isValidPersonInfo(PERSON_INFO stPersonInfo){
-	if (isValidStrID){
+	if (!isValidStrID(stPersonInfo.strID)){
 		printf("고객님의 주민등록번호가 올바르지 않습니다.\n");
 	}
-	if (testStrName == 0){
+	if (!isValidStrName(stPersonInfo.strName)){
 		printf("고객님의 이름이 올바르지 않습니다.\n");
 	}
-	if (testStrPhone == 0){
+	if (!isValidStrPhone(stPersonInfo.strPhone)){
 		printf("고객님의 전화번호가 올바르지 않습니다.\n");
 	}
-	if (!testStrID || !testStrName || !testStrPhone){
+	if (!isValidStrID(stPersonInfo.strID) || !isValidStrName(stPersonInfo.strName) || !isValidStrPhone(stPersonInfo.strPhone)){
 		return FAILURE;
 	}
 	return SUCCESS;
@@ -202,6 +257,9 @@ int isValidStrID(char strID[15]){
 	int i;
 	int testStrID = 1;
 	if (strID[6] != '-'){
+		testStrID = 0;
+	}
+	if (strID[0] == NULL){
 		testStrID = 0;
 	}
 	for (i = 0; i < (sizeof(strID) / sizeof(strID[0])); i++){
@@ -249,6 +307,23 @@ int Push(PLINKEDLIST pLinkedList, PERSON_INFO stPersonInfo){
 	pLinkedList->pTail->pPrev->pNext = pNewList;
 	pLinkedList->pTail->pPrev = pNewList;
 	return SUCCESS;
+}
+
+PERSON_INFO Pull(PLINKEDLIST pLinkedList, int rep){
+	int count = 0;
+	PLIST pCurList = pLinkedList->pHead->pNext;
+	while (count != rep){
+		pCurList = pCurList->pNext;
+		count++;
+	}
+	return pCurList->stPersonInfo;
+}
+
+int ShowAllList(PLINKEDLIST pLinkedList){
+	PLIST pCurList = pLinkedList->pHead;
+	while (pCurList != pLinkedList->pTail){
+		
+	}
 }
 
 int Release(PLINKEDLIST pLinkedList){
