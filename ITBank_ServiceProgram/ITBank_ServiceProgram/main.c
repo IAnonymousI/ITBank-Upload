@@ -40,8 +40,9 @@ int isValidStrID(char strID[15]);
 int isValidStrName(char strName[15]);
 int isValidStrPhone(char strPhone[15]);
 int Push(PLINKEDLIST pLinkedList, PERSON_INFO stPersonInfo);
-PERSON_INFO Pull(PLINKEDLIST pLinkedList, int rep);
+PERSON_INFO* Pull(PLINKEDLIST pLinkedList, int rep);
 int ShowAllList(PLINKEDLIST pLinkedList);
+int Delete(PLINKEDLIST pLinkedList, char strID[15]);
 int Release(PLINKEDLIST pLinkedList);
 
 int main(){
@@ -49,6 +50,7 @@ int main(){
 	int result;
 	int nMainMenu;
 	int nSubMenu;
+	int tempNAge;
 	char tempStrID[15];
 	char tempStrName[20];
 	char tempStrPhone[20];
@@ -65,9 +67,10 @@ int main(){
 	printf("고객 관리 프로그램\n");
 
 	while (1){
-		MAIN:
+	MAIN:
 		system("cls");
 		rep = 1;
+		tempNAge = 0;
 		memset(&stTempPersonInfo, 0, sizeof(PERSON_INFO));
 		memset(tempStrID, 0, sizeof(tempStrID));
 		memset(tempStrName, 0, sizeof(tempStrName));
@@ -122,31 +125,59 @@ int main(){
 					goto REG;
 				}
 				else if (nSubMenu == 2){
-					break;
+					goto MAIN;
 				}
 				else{
 					printf("잘못 입력하셨습니다. 다시 입력해주세요.\n");
 				}
 			}
 		case MODIFY:
-			break;
-		case SEARCH:
-			SEAR:
+		MOD :
 			rep = 0;
 			system("cls");
 			printf("주민등록번호를 입력하세요.\n\n> ");
 			fflush(stdin);
 			gets(tempStrID);
-			while (Pull(&LinkedList, rep).strID[0] != NULL){
-				stTempPersonInfo = Pull(&LinkedList, rep);
+			while (Pull(&LinkedList, rep)->strID[0] != NULL){
+				memcpy(&stTempPersonInfo, Pull(&LinkedList, rep), sizeof(PERSON_INFO));
 				if (areSameStrings(tempStrID, stTempPersonInfo.strID)){
-					printf("조회가 성공적이었습니다.\n\n");
-					printf("정보:\n\n주민등록번호: %s\n성함: %s\n연세: %d\n전화번호: %s\n", stTempPersonInfo.strID, stTempPersonInfo.strName, stTempPersonInfo.nAge, stTempPersonInfo.strPhone);
-					SEARAGAIN:+	
+					printf("현재 고객님의 정보:\n\n주민등록번호: %s\n성함: %s\n연세: %d\n전화번호: %s\n", stTempPersonInfo.strID, stTempPersonInfo.strName, stTempPersonInfo.nAge, stTempPersonInfo.strPhone);
+					printf("\n새로운 정보를 입력하세요.\n\n주민등록번호(XXXXXX-XXXXXXX): ");
+					fflush(stdin);
+					gets(tempStrID);
+					printf("성함(예: 홍길동): ");
+					fflush(stdin);
+					gets(tempStrName);
+					printf("연세: ");
+					scanf("%d", &tempNAge);
+					printf("전화번호: ");
+					fflush(stdin);
+					gets(tempStrPhone);
+					result = Delete(&LinkedList, stTempPersonInfo.strID);
+					if (result == SUCCESS){
+						result = isValidPersonInfo(stTempPersonInfo);
+						if (!result){
+							printf("고객님의 정보가 올바르지 않아 등록이 실패하였습니다.\n");
+						}
+						else {
+							memcpy(&stTempPersonInfo.strID, tempStrID, sizeof(tempStrID));
+							memcpy(&stTempPersonInfo.strName, tempStrName, sizeof(tempStrName));
+							stTempPersonInfo.nAge = tempNAge;
+							memcpy(&stTempPersonInfo.strPhone, tempStrPhone, sizeof(tempStrPhone));
+							result = Push(&LinkedList, stTempPersonInfo);
+							if (!result){
+								printf("Push함수에서 에러가 발생하였습니다.\n");
+							}
+							else {
+								printf("등록을 성공하였습니다.\n");
+							}
+						}
+					}
+				MODAGAIN:
 					printf("\n계속 하시겠습니까?\n1. 예\t2. 아니요.\n\n> ");
 					scanf("%d", &nSubMenu);
 					if (nSubMenu == 1){
-						goto SEAR;
+						goto MOD;
 					}
 					else if (nSubMenu == 2){
 						goto MAIN;
@@ -154,17 +185,17 @@ int main(){
 					else{
 						printf("\n잘못 입력하셨습니다. 다시 입력하세요.\n");
 						Sleep(2000);
-						goto SEARAGAIN;
+						goto MODAGAIN;
 					}
 				}
 				rep++;
 			}
 			printf("입력하신 주민등록번호로 찾을수 없었습니다.\n");
-			SEARAGAIN2:
+		MODAGAIN2:
 			printf("\n계속 하시겠습니까?\n1. 예\t2. 아니요.\n\n> ");
 			scanf("%d", &nSubMenu);
 			if (nSubMenu == 1){
-				goto SEAR;
+				goto MOD;
 			}
 			else if (nSubMenu == 2){
 				break;
@@ -172,15 +203,114 @@ int main(){
 			else{
 				printf("\n잘못 입력하셨습니다. 다시 입력하세요.\n");
 				Sleep(2000);
-				goto SEARAGAIN2;
+				goto MODAGAIN2;
 			}
-			Sleep(2000);
 			break;
+		case SEARCH:
+		SEAR :
+			rep = 0;
+			 system("cls");
+			 printf("주민등록번호를 입력하세요.\n\n> ");
+			 fflush(stdin);
+			 gets(tempStrID);
+			 while (Pull(&LinkedList, rep)->strID[0] != NULL){
+				 memcpy(&stTempPersonInfo, Pull(&LinkedList, rep), sizeof(PERSON_INFO));
+				 if (areSameStrings(tempStrID, stTempPersonInfo.strID)){
+					 printf("조회가 성공적이었습니다.\n\n");
+					 printf("정보:\n\n주민등록번호: %s\n성함: %s\n연세: %d\n전화번호: %s\n", stTempPersonInfo.strID, stTempPersonInfo.strName, stTempPersonInfo.nAge, stTempPersonInfo.strPhone);
+				 SEARAGAIN:
+					 printf("\n계속 하시겠습니까?\n1. 예\t2. 아니요.\n\n> ");
+					 scanf("%d", &nSubMenu);
+					 if (nSubMenu == 1){
+						 goto SEAR;
+					 }
+					 else if (nSubMenu == 2){
+						 goto MAIN;
+					 }
+					 else{
+						 printf("\n잘못 입력하셨습니다. 다시 입력하세요.\n");
+						 Sleep(2000);
+						 goto SEARAGAIN;
+					 }
+				 }
+				 rep++;
+			 }
+			 printf("입력하신 주민등록번호로 찾을수 없었습니다.\n");
+		 SEARAGAIN2:
+			 printf("\n계속 하시겠습니까?\n1. 예\t2. 아니요.\n\n> ");
+			 scanf("%d", &nSubMenu);
+			 if (nSubMenu == 1){
+				 goto SEAR;
+			 }
+			 else if (nSubMenu == 2){
+				 break;
+			 }
+			 else{
+				 printf("\n잘못 입력하셨습니다. 다시 입력하세요.\n");
+				 Sleep(2000);
+				 goto SEARAGAIN2;
+			 }
+			 Sleep(2000);
+			 break;
 		case DELETE:
+			DEL:
+			system("cls");
+			printf("주민등록번호를 입력하세요.\n\n> ");
+			fflush(stdin);
+			gets(tempStrID);
+			while (Pull(&LinkedList, rep)->strID[0] != NULL){
+				if (areSameStrings(tempStrID, Pull(&LinkedList, rep)->strID)){
+					Delete(&LinkedList, tempStrID);
+					printf("삭제를 하였습니다.\n");
+					DELAGAIN:
+					printf("\n계속 하시겠습니까?\n1. 예\t2. 아니요.\n\n> ");
+					scanf("%d", &nSubMenu);
+					if (nSubMenu == 1){
+						goto DEL;
+					}
+					else if (nSubMenu == 2){
+						goto MAIN;
+					}
+					else{
+						printf("\n잘못 입력하셨습니다. 다시 입력하세요.\n");
+						Sleep(2000);
+						goto DELAGAIN;
+					}
+				}
+				rep++;
+			}
+			printf("삭제를 하지 못하였습니다.\n");
+			printf("\n계속 하시겠습니까?\n1. 예\t2. 아니요.\n\n> ");
+			scanf("%d", &nSubMenu);
+			if (nSubMenu == 1){
+				goto DEL;
+			}
+			else if (nSubMenu == 2){
+				goto MAIN;
+			}
+			else{
+				printf("\n잘못 입력하셨습니다. 다시 입력하세요.\n");
+				Sleep(2000);
+				goto DELAGAIN;
+			}
 			break;
 		case ALL_SHOW_DATA:
-			printf("%15s | %10s | %5s | %15s\n");
-			break;
+		ALLSHOWDATA :
+			system("cls");
+					ShowAllList(&LinkedList);
+				ALLSHOWDATAAGAIN:
+					printf("\n계속하시겠습니까?\n1. 예\t2. 아니요.\n\n> ");
+					scanf("%d", &nSubMenu);
+					if (nSubMenu == 1){
+						goto ALLSHOWDATA;
+					}
+					else if (nSubMenu == 2){
+						goto MAIN;
+					}
+					else{
+						goto ALLSHOWDATAAGAIN;
+					}
+					break;
 		case EXIT:
 			printf("이용해주셔서 감사합니다.\n\n");
 			Release(&LinkedList);
@@ -226,7 +356,7 @@ int ListInit(PLINKEDLIST pLinkedList){
 int areSameStrings(char* string1, char* string2){
 	int i;
 	int test = SUCCESS;
-	if ((sizeof(string1)/sizeof(string1[0])) != (sizeof(string2)/sizeof(string2[0]))){
+	if ((sizeof(string1) / sizeof(string1[0])) != (sizeof(string2) / sizeof(string2[0]))){
 		test = FAILURE;
 	}
 	for (i = 0; i < (sizeof(string1) / sizeof(string1[0])); i++){
@@ -309,21 +439,44 @@ int Push(PLINKEDLIST pLinkedList, PERSON_INFO stPersonInfo){
 	return SUCCESS;
 }
 
-PERSON_INFO Pull(PLINKEDLIST pLinkedList, int rep){
+PERSON_INFO* Pull(PLINKEDLIST pLinkedList, int rep){
 	int count = 0;
 	PLIST pCurList = pLinkedList->pHead->pNext;
 	while (count != rep){
 		pCurList = pCurList->pNext;
 		count++;
 	}
-	return pCurList->stPersonInfo;
+	return &(pCurList->stPersonInfo);
 }
 
 int ShowAllList(PLINKEDLIST pLinkedList){
-	PLIST pCurList = pLinkedList->pHead;
-	while (pCurList != pLinkedList->pTail){
-		
+	PLIST pCurList = pLinkedList->pHead->pNext;
+	if (pLinkedList->pHead->pNext == pLinkedList->pTail){
+		printf("등록이 된 고객이 없습니다.\n");
+		return SUCCESS;
 	}
+	else{
+		printf("전체 조회\n________________________________________________________\n|   주민등록번호 |       성함 |  연세 |       전화번호 |\n________________________________________________________\n\n");
+		while (pCurList != pLinkedList->pTail){
+			printf("|%15s | %10s | %5d | %15s|\n", pCurList->stPersonInfo.strID, pCurList->stPersonInfo.strName, pCurList->stPersonInfo.nAge, pCurList->stPersonInfo.strPhone);
+			pCurList = pCurList->pNext;
+		}
+		printf("________________________________________________________\n");
+		return SUCCESS;
+	}
+}
+
+int Delete(PLINKEDLIST pLinkedList, char strID[15]){
+	PLIST pCurList = pLinkedList->pHead->pNext;
+	while (pCurList != pLinkedList->pTail){
+		if (areSameStrings(strID, pCurList->stPersonInfo.strID)){
+			pCurList->pPrev->pNext = pCurList->pNext;
+			pCurList->pNext->pPrev = pCurList->pPrev;
+			free(pCurList);
+			return SUCCESS;
+		}
+	}
+	return FAILURE;
 }
 
 int Release(PLINKEDLIST pLinkedList){
