@@ -1,7 +1,11 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <Windows.h>
 
-#define ROW 5
+#define ROW 10
 #define COL 10
 
 #define SUCCESS 1
@@ -49,8 +53,13 @@ void Exploration(PLINKEDLIST pLinkedList);
 const int arr[ROW][COL] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 1, 1, 1, 1, 1, 1, 1, 1, 0,
-	0, 1, 0, 0, 0, 0, 0, 0, 1, 0,
+	0, 1, 0, 1, 0, 1, 1, 0, 1, 0,
+	0, 1, 1, 1, 0, 1, 1, 1, 1, 0,
+	0, 1, 0, 0, 0, 1, 0, 0, 1, 0,
 	0, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+	0, 0, 1, 0, 1, 0, 1, 0, 1, 0,
+	0, 0, 1, 0, 1, 0, 0, 0, 1, 0,
+	0, 1, 1, 0, 1, 1, 1, 1, 1, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 };
 
@@ -61,13 +70,17 @@ int main(){
 
 	LINKEDLIST LinkedList;
 	ListInit(&LinkedList);
+	Ins(&LinkedList, g_stCharData);
 
 	system("pause");
 	while (1){
 		system("cls");
 
 		Draw();
-		Exploration();
+		if (g_stCharData.nXPos == START_XPOS && g_stCharData.nYPos == START_YPOS && g_stCharData.nDir == LEFT){
+			break;
+		}
+		Exploration(&LinkedList);
 
 		Sleep(200);
 	}
@@ -81,7 +94,7 @@ int compareCDStructs(CHAR_DATA f, CHAR_DATA s){
 	if (f.nXPos == s.nXPos){
 		sameXPos = 1;
 	}
-	if (f.nYPos = s.nYPos){
+	if (f.nYPos == s.nYPos){
 		sameYPos = 1;
 	}
 	if (sameXPos && sameYPos){
@@ -114,6 +127,9 @@ int ReverseDirection(int dir){
 }
 
 void ListInit(PLINKEDLIST pLinkedList){
+	pLinkedList->pHead = (PLIST)malloc(sizeof(LIST));
+	pLinkedList->pTail = (PLIST)malloc(sizeof(LIST));
+	pLinkedList->pTop = (PLIST)malloc(sizeof(LIST));
 	memset(pLinkedList->pHead, 0, sizeof(LIST));
 	memset(pLinkedList->pTop, 0, sizeof(LIST));
 	memset(pLinkedList->pTail, 0, sizeof(LIST));
@@ -122,6 +138,9 @@ void ListInit(PLINKEDLIST pLinkedList){
 	pLinkedList->pTail->pPrev = pLinkedList->pHead;
 	pLinkedList->pHead->pNext = pLinkedList->pTail;
 	pLinkedList->pTail->pNext = NULL;
+	pLinkedList->pTop = pLinkedList->pHead;
+	pLinkedList->pTop->pPrev = NULL;
+	pLinkedList->pTop->pNext = pLinkedList->pTail;
 }
 
 void Ins(PLINKEDLIST pLinkedList, CHAR_DATA Data){
@@ -214,33 +233,41 @@ void Exploration(PLINKEDLIST pLinkedList){
 		}
 		break;
 	case UP:
-		if (){
-			
+		if ((arr[g_stCharData.nYPos - 1][g_stCharData.nXPos] == ROAD) && (!isFamiliar(pLinkedList, CreateCDStruct(g_stCharData.nXPos, g_stCharData.nYPos - 1)))){
+			g_stCharData.nYPos--;
+			Ins(pLinkedList, g_stCharData);
 		}
-		else if (){
-			
+		else if ((arr[g_stCharData.nYPos][g_stCharData.nXPos + 1] == ROAD) && (!isFamiliar(pLinkedList, CreateCDStruct(g_stCharData.nXPos + 1, g_stCharData.nYPos)))){
+			g_stCharData.nXPos++;
+			g_stCharData.nDir = RIGHT;
+			Ins(pLinkedList, g_stCharData);
 		}
-		else if (){
-			
+		else if ((arr[g_stCharData.nYPos][g_stCharData.nXPos - 1] == ROAD) && (!isFamiliar(pLinkedList, CreateCDStruct(g_stCharData.nXPos - 1, g_stCharData.nYPos)))){
+			g_stCharData.nXPos--;
+			g_stCharData.nDir = LEFT;
+			Ins(pLinkedList, g_stCharData);
 		}
 		else{
-			
+			g_stCharData = SetToPrevious(pLinkedList);
 		}
 		break;
 	case DOWN:
-		if (arr[g_stCharData.nYPos + 1][g_stCharData.nXPos] == ROAD){
+		if ((arr[g_stCharData.nYPos + 1][g_stCharData.nXPos] == ROAD) && (!isFamiliar(pLinkedList, CreateCDStruct(g_stCharData.nXPos, g_stCharData.nYPos + 1)))){
 			g_stCharData.nYPos++;
+			Ins(pLinkedList, g_stCharData);
 		}
-		else if (arr[g_stCharData.nYPos][g_stCharData.nXPos + 1] == ROAD){
+		else if ((arr[g_stCharData.nYPos][g_stCharData.nXPos + 1] == ROAD) && (!isFamiliar(pLinkedList, CreateCDStruct(g_stCharData.nXPos + 1, g_stCharData.nYPos)))){
 			g_stCharData.nXPos++;
 			g_stCharData.nDir = RIGHT;
+			Ins(pLinkedList, g_stCharData);
 		}
-		else if (arr[g_stCharData.nYPos][g_stCharData.nXPos - 1] == ROAD){
+		else if ((arr[g_stCharData.nYPos][g_stCharData.nXPos - 1] == ROAD) && (!isFamiliar(pLinkedList, CreateCDStruct(g_stCharData.nXPos - 1, g_stCharData.nYPos)))){
 			g_stCharData.nXPos--;
 			g_stCharData.nDir = LEFT;
+			Ins(pLinkedList, g_stCharData);
 		}
 		else{
-			g_stCharData.nDir = UP;
+			g_stCharData = SetToPrevious(pLinkedList);
 		}
 		break;
 	}
